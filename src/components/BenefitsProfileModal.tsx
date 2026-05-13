@@ -27,6 +27,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../lib/utils';
+import { API_URL, STORAGE_URL, BASE_URL } from '../lib/config';
 import { Application } from '../App';
 import PdfViewer from './PdfViewer';
 
@@ -42,7 +43,7 @@ const formatDate = (date: any) => {
 const getFileUrl = (file: any) => {
   if (!file) return null;
 
-  const storageBaseUrl = "https://api-dbosca.drchiocms.com/storage/";
+  const storageBaseUrl = STORAGE_URL.endsWith('/') ? STORAGE_URL : `${STORAGE_URL}/`;
 
   // If it's a data URL or already absolute, return as is
   if (typeof file === "string" && (file.startsWith('data:') || file.startsWith('http'))) {
@@ -51,7 +52,7 @@ const getFileUrl = (file: any) => {
 
   // If it starts with /api/, it's already a full view URL from the backend
   if (typeof file === "string" && file.startsWith('/api/')) {
-    return `https://api-dbosca.drchiocms.com${file}`;
+    return `${BASE_URL}${file}`;
   }
 
   // If JSON string → parse
@@ -146,13 +147,13 @@ const AuthenticatedPreview = ({ path, label }: { path: string, label: string }) 
         const cleanPath = path.includes('/storage/') ? path.split('/storage/')[1] : path;
         
         // If it's a full external URL but not ours
-        if (path.startsWith('http') && !path.includes('api-dbosca.phoenix.com.ph')) {
+        if (path.startsWith('http') && !path.includes(BASE_URL.replace(/^https?:\/\//, ''))) {
            setUrl(path);
            setLoading(false);
            return;
         }
 
-        const response = await fetch(`https://api-dbosca.drchiocms.com/api/view-file?path=${encodeURIComponent(cleanPath)}`, {
+        const response = await fetch(`${API_URL}/view-file?path=${encodeURIComponent(cleanPath)}`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         
@@ -410,13 +411,13 @@ export default function BenefitsProfileModal({
       const isBirthday = regType.includes("birthday");
       
       if (isWedding) {
-        endpoint = `https://api-dbosca.drchiocms.com/api/wedding-anniversary-incentives`;
+        endpoint = `${API_URL}/wedding-anniversary-incentives`;
       } else if (isBirthday) {
-        endpoint = `https://api-dbosca.drchiocms.com/api/birthday-incentives`;
+        endpoint = `${API_URL}/birthday-incentives`;
       } else if (regType.includes("social pension")) {
-        endpoint = `https://api-dbosca.drchiocms.com/api/social-pension/${application.id}`;
+        endpoint = `${API_URL}/social-pension/${application.id}`;
       } else {
-        endpoint = `https://api-dbosca.drchiocms.com/api/benefit-applications/${application.id}`;
+        endpoint = `${API_URL}/benefit-applications/${application.id}`;
       }
 
       const response = await fetch(endpoint, {
@@ -953,7 +954,7 @@ export default function BenefitsProfileModal({
     setIsFetchingFile(true);
     try {
       const token = localStorage.getItem('token');
-      const url = `https://api-dbosca.drchiocms.com/api/view-file?path=${encodeURIComponent(path)}`;
+      const url = `${API_URL}/view-file?path=${encodeURIComponent(path)}`;
       
       const response = await fetch(url, {
         headers: {

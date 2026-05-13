@@ -20,6 +20,7 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import { cn, exportToCSV } from '../lib/utils';
 import { Application } from '../App';
+import { API_URL } from '../lib/config';
 
 interface MasterlistProps {
   onViewProfile: (app: Application) => void;
@@ -76,7 +77,7 @@ export default function Masterlist({ onViewProfile, refreshTrigger, onMoveToPend
       }
 
       // Fetch a large enough dataset for local filtering
-      const url = `https://api-dbosca.drchiocms.com/api/masterlist?per_page=5000`;
+      const url = `${API_URL}/masterlist?per_page=5000`;
       const response = await fetch(url, { headers });
       
       if (response.status === 429) {
@@ -230,7 +231,7 @@ export default function Masterlist({ onViewProfile, refreshTrigger, onMoveToPend
       }
 
       // In Masterlist, we are always dealing with masterlist records
-      const endpoint = `https://api-dbosca.drchiocms.com/api/masterlist/${id}`;
+      const endpoint = `${API_URL}/masterlist/${id}`;
 
       const res = await fetch(endpoint, {
         method: "PUT",

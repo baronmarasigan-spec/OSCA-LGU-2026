@@ -27,6 +27,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../lib/utils';
 import { Application } from '../App';
 import PdfViewer from './PdfViewer';
+import { API_URL } from '../lib/config';
 
 interface RegistrationProfileModalProps {
   application: Application;
@@ -483,7 +484,7 @@ export default function RegistrationProfileModal({ application, isOpen, onClose,
     try {
       const token = localStorage.getItem('token');
       // Updated to use the new view-file API endpoint as per request
-      const url = `https://api-dbosca.drchiocms.com/api/view-file?path=${encodeURIComponent(path)}`;
+      const url = `${API_URL}/view-file?path=${encodeURIComponent(path)}`;
       
       const response = await fetch(url, {
         headers: {

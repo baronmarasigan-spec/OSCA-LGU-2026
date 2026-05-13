@@ -5,6 +5,7 @@ import LandingPage from './LandingPage';
 import RegistrationForm from './RegistrationForm';
 import AdminDashboard from './AdminDashboard';
 import CitizenPortal from './CitizenPortal';
+import { API_URL } from './lib/config';
 
 export interface Application {
   id: number;
@@ -110,7 +111,7 @@ export default function App() {
         headers["Authorization"] = `Bearer ${token}`;
       }
 
-      const response = await fetch("https://api-dbosca.drchiocms.com/api/applications", {
+      const response = await fetch(`${API_URL}/applications`, {
         method: "GET",
         headers
       });

@@ -16,6 +16,7 @@ import {
   MoreVertical
 } from 'lucide-react';
 import { cn, exportToCSV } from '../lib/utils';
+import { API_URL } from '../lib/config';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface PhilHealthRecord {
@@ -104,7 +105,7 @@ export default function PhilHealthFacilitation() {
     fetchData();
   }, [barangayFilter, statusFilter]);
 
-  const fetchData = async (url = 'https://api-dbosca.drchiocms.com/api/philhealth-facilitation') => {
+  const fetchData = async (url = `${API_URL}/philhealth-facilitation`) => {
     setIsLoading(true);
     setError(null);
     setData([]); // Reset data before fetch
@@ -112,7 +113,7 @@ export default function PhilHealthFacilitation() {
       const token = localStorage.getItem('token');
       // Append filters to URL if base URL is used
       let finalUrl = url;
-      if (url === 'https://api-dbosca.drchiocms.com/api/philhealth-facilitation') {
+      if (url === `${API_URL}/philhealth-facilitation`) {
         const params = new URLSearchParams();
         if (barangayFilter) params.append('barangay', barangayFilter);
         if (statusFilter) params.append('status', statusFilter);
@@ -191,7 +192,7 @@ export default function PhilHealthFacilitation() {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`https://api-dbosca.drchiocms.com/api/philhealth-facilitation/${record.id}`, {
+      const response = await fetch(`${API_URL}/philhealth-facilitation/${record.id}`, {
         method: "PUT",
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -226,7 +227,7 @@ export default function PhilHealthFacilitation() {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`https://api-dbosca.drchiocms.com/api/philhealth-facilitation/${selectedRecord.id}`, {
+      const response = await fetch(`${API_URL}/philhealth-facilitation/${selectedRecord.id}`, {
         method: "PUT",
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -266,7 +267,7 @@ export default function PhilHealthFacilitation() {
   const handleFileAction = async (path: string, filename: string, action: 'view' | 'download') => {
     try {
       const token = localStorage.getItem('token');
-      const baseUrl = `https://api-dbosca.drchiocms.com/api/view-file`;
+      const baseUrl = `${API_URL}/view-file`;
       const queryParams = `path=${encodeURIComponent(path)}`;
       const url = `${baseUrl}?${queryParams}`;
 
@@ -304,7 +305,7 @@ export default function PhilHealthFacilitation() {
     
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`https://api-dbosca.drchiocms.com/api/philhealth-facilitation/${id}`, {
+      const response = await fetch(`${API_URL}/philhealth-facilitation/${id}`, {
         method: "DELETE",
         headers: {
           'Authorization': `Bearer ${token}`,

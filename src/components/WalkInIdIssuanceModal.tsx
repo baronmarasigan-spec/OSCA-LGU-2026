@@ -20,6 +20,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import toast from 'react-hot-toast';
 import { cn } from '../lib/utils';
 import { Application } from '../App';
+import { API_URL } from '../lib/config';
 
 interface WalkInIdIssuanceModalProps {
   isOpen: boolean;
@@ -324,7 +325,7 @@ export default function WalkInIdIssuanceModal({
       }
 
       // 4. Send directly as root (DO NOT wrap in { data: fd })
-      const response = await fetch("https://api-dbosca.drchiocms.com/api/id-issuances", {
+      const response = await fetch(`${API_URL}/id-issuances`, {
         method: "POST",
         headers,
         body: fd
